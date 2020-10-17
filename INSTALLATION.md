@@ -13,3 +13,6 @@ CLIENT
 6. Edit the parameters in addons\CVFE\CfgCVFE.hpp to suit your desires.
 7. Repbo the mission folder, add it to your server and you should be good to go.
 
+BATTLEYE 
+
+Merge to contents of remotexec.txt in your download with that of the corresponding file in your \SC\battleye folder for your server to add the needed exception.
