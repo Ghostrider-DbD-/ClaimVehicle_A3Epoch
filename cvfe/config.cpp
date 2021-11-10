@@ -15,9 +15,9 @@ class CfgPatches {
 
 class CfgBuild {
     class CVFE {
-        build = 1;
-        version = 0.1;
-        date = "7-1-20";
+        build = 2;
+        version = 0.11;
+        date = "1-08-21";
     };
 };
 

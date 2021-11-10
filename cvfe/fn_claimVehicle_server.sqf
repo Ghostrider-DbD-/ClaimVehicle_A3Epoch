@@ -1,11 +1,7 @@
-/*
-	CVFE_fnc_claimVehicle_server
-	Copyright 2020
-	By Ghostrider-GRG-
-*/
+
 
 params["_vehicle","_player"];
-
+diag_log format["CVFE: called with _vehicle = %1 and _player = %2",_vehicle,_player];
 private _missingItems = [];
 try {
 	if (EPOCH_VehicleSlots isEqualTo []) throw 1;  // no free permenant vehicle slots available
@@ -13,6 +9,7 @@ try {
 	if !(_hasSlot isEqualTo "ABORT") throw 2;
 
 	private _requiredItems = getArray(missionConfigFile >> "CfgCVFE" >> "requiredClaimComponents");
+	diag_log format["_requiredItems = %1",_requiredItems];
 	private _mags = magazines _player;
 	
 	/* remove required items from player inventory */
@@ -20,6 +17,7 @@ try {
 		_x params["_cn","_count"];
 		for "_i" from 0 to _count do 
 		{
+			//diag_log format["_fnc_claimVehicleServer: _x = %1",_x];
 			player removeMagazine _cn;
 		};
 	} forEach _requiredItems;
@@ -36,7 +34,7 @@ try {
 	// identify lock owner
 	private _lockOwner = getPlayerUID _player;
 	private _playerGroup = _player getVariable["GROUP", ""];
-	if !(_playerGroup isEqualTo "") then {
+	if (_playerGroup isEqualTo "") then {
 		_lockOwner = _playerGroup;
 	};
 
@@ -80,20 +78,13 @@ try {
 	private _m = format["%1 has been claimed",_displayName];
 	diag_log format["CVFE: Vehicle %1 has been clamed by player %2 for a cost of %3",_vehicle,_player,_claimCost];
 	[_m] remoteExec["systemChat",owner _player];
-	[_m,5] remoteExec["EPOCH_Message",owner _player];	
-	diag_log _m;	
+	[_m,5] remoteExec["EPOCH_Message",owner _player];		
 }
 
 catch {
 	switch (_exception) do {
 		case 1: {  // Insufficient free vehicle slots in EPOCH
 			private _error = format["ERROR: Insufficient free vehicle slots to claim the vehicle: contact your server owner",getText(configFile >> "CfgVehicles" >> typeOf _vehicle >> "displayName")];
-			[_error] remoteExec["systemChat",(owner _player)];
-			[_error,5] remoteExec["EPOCH_Message",(owner _player)];
-			[_error] remoteExec["diag_log",(owner _player)];
-		};
-		case 2: {  // Already a permenant EPOCH vehicle.
-			private _error = format["ERROR: This %1 is already a permenant vehicle",getText(configFile >> "CfgVehicles" >> typeOf _vehicle >> "displayName")];
 			[_error] remoteExec["systemChat",(owner _player)];
 			[_error,5] remoteExec["EPOCH_Message",(owner _player)];
 			[_error] remoteExec["diag_log",(owner _player)];
