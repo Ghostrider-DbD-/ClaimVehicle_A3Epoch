@@ -1,7 +1,18 @@
+/*
+	CVFE_fnc_claimVehicle_server 
 
+	Purpose: handle serverside operations needed to convert a vehicle to a permenant one.
+	Parameters:
+		_vehicle - the vehicle to be handled 
+		_player - the player requesting claim; this player will be registered as the owner 
+
+	Returns: None 
+
+	Credits: HeMan, AWOL and the EpochMod team. 
+	Some code shown below is from or adapted from scripts in epoch_server for Aram 3 Epoch
+*/
 
 params["_vehicle","_player"];
-diag_log format["CVFE: called with _vehicle = %1 and _player = %2",_vehicle,_player];
 private _missingItems = [];
 try {
 	if (EPOCH_VehicleSlots isEqualTo []) throw 1;  // no free permenant vehicle slots available
@@ -17,8 +28,7 @@ try {
 		_x params["_cn","_count"];
 		for "_i" from 0 to _count do 
 		{
-			//diag_log format["_fnc_claimVehicleServer: _x = %1",_x];
-			player removeMagazine _cn;
+			[_cn] remoteExec ["removeMagazine", _player];
 		};
 	} forEach _requiredItems;
 

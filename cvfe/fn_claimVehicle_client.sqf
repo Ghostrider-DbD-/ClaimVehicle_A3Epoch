@@ -1,3 +1,17 @@
+/*
+	CVFE_fnc_claimVehicle_client 
+
+	Purpose: establish if vehicle can be claimed and if so do the claim 
+
+	Parameters 
+		_vehicle - the vehicle to be handled
+
+	Returns
+		None 
+
+	By Ghostrider-GRG-
+*/
+
 
 params["_vehicle"];
 private _missingItems = [];
@@ -5,13 +19,10 @@ try
 {
 	/* Check if player has enough crypto */ 
 	private _cost = getNumber(missionConfigFile >> "CfgCVFE" >> "claimCost");
-	//systemChat format["CVFE: claimVehicle_client called _cost = %1",_cost];
 	if (_cost > EPOCH_playerCrypto) throw 1;
 	
 	/* Check if this is a permenant vehicle */
 	private _slot = _vehicle getVariable["VEHICLE_SLOT","ABORT"];
-	//systemChat format["_slot = %1",_slot];
-	//diag_log format["CVFE: _slot = %1",_slot];
 	if !(_slot isEqualTo "ABORT") throw 2;
 
 	private _requiredItems = getArray(missionConfigFile >> "CfgCVFE" >> "requiredClaimComponents");
@@ -19,18 +30,13 @@ try
 
 	/* check for missing items */
 	private _mags = magazines player;
-	//diag_log format["_mags = %1",_mags];
 	{
 		_x params["_cn","_requiredCount"];
 		private _avail = (magazines player) select {_x isEqualTo _cn};	
 		private _availCount = count _avail;
-		//diag_log format["_avail = %1 | count _avail = %2",_avail, _availCount];
-		//private _m = format["CVFE: _cn = %1 | _count = %2 | _n = %3 | still needed = %4",_cn,_requiredCount,_avail, _requiredCount - _availCount];
-		//diag_log _m;	
 		if (_availCount < _requiredCount) then 
 		{
 			_missingItems pushback[_cn,_requiredCount - _availCount];
-			//diag_log format["_missingItems update to %1",_missingItems];
 		};
 	} forEach _requiredItems;
 
@@ -60,7 +66,6 @@ catch
 			private _error = "";
 			{
 				_x params["_cn","_count"];
-				//diag_log format ["_x = %1 | _cn = %2 | _count = %3",_x,_cn,_count];
 				if (_error isEqualTo "") then 
 				{
 					_error = format["Missing Items Need to Claim Vehicle: %1 %2",_count,getText(configFile >> "CfgMagazines" >> _cn >> "displayName")];
