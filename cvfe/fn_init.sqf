@@ -13,7 +13,6 @@ addMissionEventHandler ["PlayerConnected",
 {
     params["_id","_uid","_name","_jip","_owner"];
 	_owner publicVariableClient "CVFE_fnc_claimVehicle_client";
-	diag_log format["broadcasting variable CVFE_fnc_claimVehicle_client to player %1",_name];
 }];
 
 private _build = getText(configFile >> "CfgBuild" >> "CVFE" >> "build");
